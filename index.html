@@ -642,7 +642,7 @@
 
                 <div class="botoes-footer">
                     <button type="button" class="btn btn-limpar" onclick="limparFormulario()">Limpar Respostas</button>
-                    <button type="submit" class="btn btn-enviar">Enviar Respostas</button>
+                    <button type="submit" class="btn btn-enviar" id="btnEnviar">Enviar Respostas</button>
                 </div>
             </form>
         </div>
@@ -823,26 +823,40 @@
                 data_hora: new Date().toLocaleString('pt-BR')
             };
 
-            // Enviar para Google Sheets via Apps Script
+            // Enviar para o Google Sheets via Apps Script.
+            // A confirmação só é exibida depois que o Apps Script confirma a gravação.
+            const botaoEnviar = document.getElementById('btnEnviar');
+            botaoEnviar.disabled = true;
+            botaoEnviar.textContent = 'Registrando respostas...';
             fetch(googleSheetURL, {
                 method: 'POST',
                 body: JSON.stringify(dados)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'sucesso') {
-                    mostrarMensagem(`✓ Respostas enviadas com sucesso! Você acertou ${acertos} de 7 questões objetivas.`, 'sucesso');
-                    setTimeout(() => {
-                        document.getElementById('formulario').reset();
-                        document.querySelectorAll('.alternativa').forEach(alt => alt.classList.remove('selecionada'));
-                    }, 2000);
-                } else {
-                    mostrarMensagem('Erro ao enviar respostas. Tente novamente.', 'erro');
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status !== 'sucesso') {
+                    throw new Error(data.mensagem || 'O Apps Script não confirmou o registro.');
+                }
+
+                // Neste ponto, o Apps Script já executou appendRow na planilha.
+                mostrarMensagem('✓ Enviado com sucesso! Suas respostas foram registradas na planilha Google Sheets.', 'sucesso');
+                setTimeout(() => {
+                    document.getElementById('formulario').reset();
+                    document.querySelectorAll('.alternativa').forEach(alt => alt.classList.remove('selecionada'));
+                }, 2000);
             })
             .catch(error => {
                 console.error('Erro:', error);
-                mostrarMensagem('Erro de conexão. Verifique se o Apps Script está ativo.', 'erro');
+                mostrarMensagem('Não foi possível registrar as respostas. Verifique sua conexão e tente novamente.', 'erro');
+            })
+            .finally(() => {
+                botaoEnviar.disabled = false;
+                botaoEnviar.textContent = 'Enviar Respostas';
             });
         }
 
