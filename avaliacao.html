@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Química - 3ª Série F - 3º Bimestre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-section {
+            padding: 25px;
+            border-bottom: 2px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #f0f0f0;
+        }
+
+        .questions-section {
+            padding: 25px;
+        }
+
+        .questao {
+            margin-bottom: 35px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .questao-titulo {
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .questao-enunciado {
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .questao-imagem {
+            background: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            color: #666;
+            font-size: 13px;
+            font-style: italic;
+            text-align: center;
+        }
+
+
+        .questao-imagem img {
+            display: block;
+            width: 100%;
+            max-width: 760px;
+            height: auto;
+            margin: 0 auto 10px;
+            border-radius: 6px;
+            border: 1px solid #d8e1ef;
+        }
+
+        .questao-imagem figcaption {
+            color: #536174;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 1.45;
+        }
+
+        .alternativas {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .alternativa {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -2px -2px 6px rgba(255, 255, 255, 0.8);
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .alternativa::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .alternativa:hover {
+            box-shadow: 4px 4px 12px rgba(102, 126, 234, 0.2), -2px -2px 6px rgba(255, 255, 255, 0.9);
+            border-color: #667eea;
+        }
+
+        .alternativa.selecionada {
+            background-color: #1a5f3f;
+            color: white;
+            font-weight: bold;
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3);
+            transform: translateY(2px);
+            border-color: #0d3d27;
+        }
+
+        .alternativa.selecionada::before {
+            background: #4caf50;
+            border-color: #4caf50;
+        }
+
+        .alternativa.selecionada::after {
+            content: '✓';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .campo-dissertativa {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .campo-dissertativa:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .botoes-footer {
+            display: flex;
+            gap: 15px;
+            padding: 25px;
+            border-top: 2px solid #e0e0e0;
+            background: #f8f9fa;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-enviar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-limpar {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-limpar:hover {
+            background: #d0d0d0;
+        }
+
+        .mensagem {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .mensagem.sucesso {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .mensagem.erro {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .info-bimestre {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-left: 4px solid #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .questao {
+                padding: 15px;
+            }
+
+            .alternativa {
+                font-size: 13px;
+                padding: 12px 12px 12px 40px;
+            }
+
+            .botoes-footer {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>E.E. PROFª WANDA MASCAGNI DE SÁ</h1>
+            <p>Avaliação de Química - 3ª Série F - 3º Bimestre</p>
+            <p style="font-size: 12px; margin-top: 5px;">Cinética Química e Equilíbrio Químico</p>
+        </div>
+
+        <div class="questions-section">
+            <div id="mensagem" class="mensagem"></div>
+
+            <div class="info-bimestre">
+                <strong>📚 Tema:</strong> Investigação das condições para transformações químicas (Aulas 1-4: Fatores que influenciam a rapidez das reações)
+            </div>
+
+            <form id="formulario">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="turma">Turma *</label>
+                        <select id="turma" required>
+                            <option value="">-- Selecione a turma --</option>
+                            <option value="3ª Série F">3ª Série F</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nome">Nome do Aluno(a) *</label>
+                        <select id="nome" required>
+                            <option value="">-- Selecione o nome --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ra">RA</label>
+                        <input type="text" id="ra" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" readonly>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 1 (Objetiva - Grupo 1) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 1 (Objetiva) - Reconhecimento</div>
+                    <div class="questao-enunciado">
+                        Ao analisar uma reação química em laboratório, um professor aqueceu dois frascos contendo a mesma quantidade de reagentes. Ele manteve um frasco a 25°C e outro a 80°C, observando que a reação ocorria muito mais rapidamente no frasco aquecido. Qual é o fator responsável pela diferença na rapidez das reações observada neste experimento?
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q1-temperatura.png" alt="Efeito da temperatura sobre a rapidez da reação: o sistema aquecido apresenta mais colisões efetivas.">
+                        <figcaption>Efeito da temperatura sobre a rapidez da reação: o sistema aquecido apresenta mais colisões efetivas.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q1" data-resposta="C">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q1')">
+                            <strong>A)</strong> A concentração dos reagentes diminuiu no frasco aquecido.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q1')">
+                            <strong>B)</strong> O volume total da solução aumentou, diluindo os reagentes.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q1')">
+                            <strong>C)</strong> A temperatura aumentada forneceu mais energia cinética às moléculas, acelerando as colisões entre reagentes. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q1')">
+                            <strong>D)</strong> O aumento de temperatura transformou os reagentes em outras substâncias.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q1')">
+                            <strong>E)</strong> A pressão do sistema aumentou, deslocando completamente o equilíbrio.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 2 (Objetiva - Grupo 1) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 2 (Objetiva) - Reconhecimento</div>
+                    <div class="questao-enunciado">
+                        Um experimento com água oxigenada (H₂O₂) foi realizado sob duas condições: (1) sem adicionar nada e (2) adicionando um catalisador (dióxido de manganês - MnO₂). Em ambos os casos, a temperatura permanecia constante a 25°C. A reação com catalisador foi significativamente mais rápida. Identifique qual fator afetou diretamente a velocidade da reação neste experimento.
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q2-catalisador.png" alt="Comparação entre a decomposição do H₂O₂ sem catalisador e com MnO₂.">
+                        <figcaption>Comparação entre a decomposição do H₂O₂ sem catalisador e com MnO₂.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q2" data-resposta="D">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q2')">
+                            <strong>A)</strong> A quantidade total de reagentes foi aumentada no tubo com catalisador.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q2')">
+                            <strong>B)</strong> O pH da solução mudou, interferindo na reação.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q2')">
+                            <strong>C)</strong> A pressão atmosférica sobre o tubo com catalisador foi maior.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q2')">
+                            <strong>D)</strong> O catalisador (MnO₂) diminuiu a energia de ativação, permitindo a reação ocorrer mais rapidamente. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q2')">
+                            <strong>E)</strong> O catalisador criou novas moléculas que acelerou a decomposição.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 3 (Objetiva - Grupo 2) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 3 (Objetiva) - Aplicação/Relação</div>
+                    <div class="questao-enunciado">
+                        Uma reação entre ácido clorídrico (HCl) e carbonato de cálcio (CaCO₃) foi testada de três maneiras: (1) com CaCO₃ em pó fino, (2) com CaCO₃ em pedaços grandes e (3) com CaCO₃ em pó fino aquecido. Qual alternativa melhor explica a relação entre a área de superfície e a velocidade da reação neste experimento?
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q3-area-superficial.png" alt="Área de superfície e temperatura alteram a intensidade da reação entre CaCO₃ e HCl.">
+                        <figcaption>Área de superfície e temperatura alteram a intensidade da reação entre CaCO₃ e HCl.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q3" data-resposta="B">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q3')">
+                            <strong>A)</strong> Quanto maior a área de superfície, menor a velocidade, pois mais material é consumido.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q3')">
+                            <strong>B)</strong> Quanto maior a área de superfície do CaCO₃, maior a velocidade da reação, pois há mais pontos de contato com o ácido. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q3')">
+                            <strong>C)</strong> A temperatura afeta apenas reações de gases, não interferindo em reações sólido-líquido.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q3')">
+                            <strong>D)</strong> Pó fino reage mais lentamente porque as partículas se repelem mutuamente.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q3')">
+                            <strong>E)</strong> A área de superfície não influencia a velocidade das reações químicas.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 4 (Objetiva - Grupo 2) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 4 (Objetiva) - Aplicação/Relação</div>
+                    <div class="questao-enunciado">
+                        Um estudante preparou duas soluções de permanganato de potássio (KMnO₄): uma com concentração 0,1 mol/L e outra com concentração 0,5 mol/L. Ambas foram colocadas em tubos contendo a mesma quantidade de peróxido de hidrogênio (H₂O₂) em iguais condições de temperatura e pressão. Qual relação pode ser estabelecida entre a concentração do permanganato e a velocidade de reação?
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q4-concentracao.png" alt="Maior concentração significa mais partículas reagentes disponíveis por unidade de volume.">
+                        <figcaption>Maior concentração significa mais partículas reagentes disponíveis por unidade de volume.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q4" data-resposta="D">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q4')">
+                            <strong>A)</strong> Concentrações maiores diminuem a velocidade porque as moléculas ficam muito aglomeradas.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q4')">
+                            <strong>B)</strong> A concentração não afeta a velocidade, apenas a quantidade de produto formado.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q4')">
+                            <strong>C)</strong> Concentrações maiores causam reações mais lentamente porque consomem mais energia.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q4')">
+                            <strong>D)</strong> Concentrações maiores aumentam a velocidade da reação porque há mais partículas reagentes por unidade de volume, aumentando a frequência de colisões efetivas. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q4')">
+                            <strong>E)</strong> A concentração afeta apenas o tempo total, não a velocidade instantânea.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 5 (Objetiva - Grupo 2) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 5 (Objetiva) - Aplicação/Relação</div>
+                    <div class="questao-enunciado">
+                        Em uma indústria de refrigerantes, a reação entre o ácido cítrico e o bicarbonato de sódio é controlada de forma muito precisa. Quando a reação ocorre em excesso, gera gases demais e o produto explode; quando ocorre muito lentamente, o produto não alcança a efervescência esperada. Relacione os fatores de controle (temperatura, concentração e catalisador) com a possibilidade de ajustar a velocidade da reação industrial de forma segura.
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q5-industria-refrigerantes.png" alt="Controle industrial da temperatura, concentração e catalisador para manter uma velocidade segura.">
+                        <figcaption>Controle industrial da temperatura, concentração e catalisador para manter uma velocidade segura.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q5" data-resposta="C">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q5')">
+                            <strong>A)</strong> Apenas a temperatura pode controlar a velocidade; concentração e catalisador não têm efeito.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q5')">
+                            <strong>B)</strong> Apenas o catalisador permite controlar a velocidade de forma segura e previsível.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q5')">
+                            <strong>C)</strong> Temperatura, concentração dos reagentes e catalisador são todos fatores que podem ser ajustados para controlar a velocidade da reação de forma segura e eficiente. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q5')">
+                            <strong>D)</strong> A velocidade da reação é determinada apenas pela natureza dos reagentes e não pode ser alterada.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q5')">
+                            <strong>E)</strong> O aumento da concentração sempre reduz a velocidade, ao contrário da temperatura.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 6 (Objetiva - Grupo 3) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 6 (Objetiva) - Análise/Síntese</div>
+                    <div class="questao-enunciado">
+                        Uma empresa precisa acelerar a decomposição de resíduos tóxicos em laboratório. Atualmente, a reação ocorre muito lentamente a 30°C com concentração 0,2 mol/L. Um engenheiro sugeriu quatro mudanças simultâneas: aumentar a temperatura para 70°C, aumentar a concentração para 0,8 mol/L, adicionar um catalisador e aumentar a agitação (aumentando a área de superfície efetiva). Qual seria a estratégia mais eficiente para acelerar a reação, considerando segurança e custo-benefício?
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q6-estrategia.png" alt="Comparação visual de estratégias para aumentar a velocidade sem comprometer a segurança.">
+                        <figcaption>Comparação visual de estratégias para aumentar a velocidade sem comprometer a segurança.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q6" data-resposta="E">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q6')">
+                            <strong>A)</strong> Aplicar todas as quatro mudanças simultaneamente para garantir a máxima aceleração, independentemente dos riscos.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q6')">
+                            <strong>B)</strong> Apenas aumentar a temperatura, pois é o método mais seguro e barato.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q6')">
+                            <strong>C)</strong> Apenas aumentar a concentração, pois não envolve riscos de queimaduras térmicas.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q6')">
+                            <strong>D)</strong> Apenas adicionar um catalisador, pois não afeta nenhum outro parâmetro da reação.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q6')">
+                            <strong>E)</strong> Combinação estratégica: adicionar um catalisador (altamente eficiente) + aumentar temperatura moderadamente (de 30°C para 50-60°C) + manter concentração controlada, evitando acelerar demais e comprometer a segurança. ✓
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 7 (Objetiva - Grupo 3) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 7 (Objetiva) - Análise/Síntese</div>
+                    <div class="questao-enunciado">
+                        Um bioquímico estuda a reação de decomposição de proteínas em dois cenários: (1) em tubo de ensaio a 37°C sem enzima e (2) em célula viva a 37°C com enzima. Embora a temperatura seja idêntica, a reação ocorre bilhões de vezes mais rápida na célula viva. Analisando a cinética química e o papel dos catalisadores biológicos, qual é a explicação mais adequada para essa diferença extraordinária?
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q7-enzima.png" alt="Enzimas reduzem a barreira de energia de ativação na mesma temperatura.">
+                        <figcaption>Enzimas reduzem a barreira de energia de ativação na mesma temperatura.</figcaption>
+                    </figure>
+                    <div class="alternativas" data-questao="Q7" data-resposta="A">
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q7')">
+                            <strong>A)</strong> As enzimas (catalisadores biológicos) reduzem drasticamente a energia de ativação necessária, permitindo que a reação ocorra bilhões de vezes mais rápido na mesma temperatura. ✓
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q7')">
+                            <strong>B)</strong> Na célula viva, a temperatura real é muito mais alta que 37°C, causando a aceleração.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q7')">
+                            <strong>C)</strong> A concentração de proteínas em uma célula é bilhões de vezes maior que em um tubo.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q7')">
+                            <strong>D)</strong> A célula utiliza pressão extra e agitação constante para forçar a reação.
+                        </label>
+                        <label class="alternativa" onclick="selecionarResposta(this, 'Q7')">
+                            <strong>E)</strong> As reações na célula não seguem as mesmas leis da cinética química que ocorrem em laboratório.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 8 (Dissertativa - Grupo 1) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 8 (Dissertativa) - Reconhecimento/Explicação</div>
+                    <div class="questao-enunciado">
+                        <strong>Explicar os fatores que influenciam a rapidez das transformações químicas.</strong>
+                        
+                        <br><br>Um professor realiza uma demonstração em sala de aula: coloca um palito de fósforo queimando lentamente ao ar livre, e depois coloca outro palito identicamente inflamado dentro de um tubo de oxigênio puro (O₂). O segundo palito queima muito mais intensamente.
+                        
+                        <br><br><em>Explique por que a mudança de concentração do gás comburente (oxigênio) causa uma mudança tão dramática na rapidez da combustão. Cite pelo menos dois fatores que você identifica neste experimento que afetam a velocidade das reações.</em>
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q8-oxigenio.png" alt="Combustão de um fósforo no ar e em oxigênio puro.">
+                        <figcaption>Combustão de um fósforo no ar e em oxigênio puro.</figcaption>
+                    </figure>
+                    <textarea class="campo-dissertativa" id="Q8" placeholder="Sua resposta aqui..."></textarea>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+                        <strong>Critérios de Avaliação:</strong><br>
+                        0,0-0,3: Não responde ou resposta irrelevante<br>
+                        0,4-0,6: Responde parcialmente, mencionando apenas um fator ou explicação incompleta<br>
+                        0,7-0,9: Responde adequadamente, identifica dois fatores mas falta contexto molecular<br>
+                        1,0: Resposta completa, cita concentração e colisões efetivas, explica mecanismo molecular
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 9 (Dissertativa - Grupo 2) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 9 (Dissertativa) - Aplicação/Comparação</div>
+                    <div class="questao-enunciado">
+                        <strong>Relacionar fatores de cinética química a processos tecnológicos e cotidianos.</strong>
+                        
+                        <br><br>Na cozinha de uma restaurante, o cozinheiro sabe que alimentos cozinham mais rápido quando: (1) a água está mais quente, (2) os alimentos são cortados em pedaços pequenos, (3) a panela está tampada. 
+                        
+                        <br><br><em>Relacione cada uma dessas três práticas culinárias com os fatores que influenciam a rapidez das reações químicas que ocorrem durante o cozimento. Indique qual das três práticas tem o efeito mais significativo.</em>
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q9-cozimento.png" alt="Temperatura, área superficial e retenção de calor no cozimento.">
+                        <figcaption>Temperatura, área superficial e retenção de calor no cozimento.</figcaption>
+                    </figure>
+                    <textarea class="campo-dissertativa" id="Q9" placeholder="Sua resposta aqui..."></textarea>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+                        <strong>Critérios de Avaliação:</strong><br>
+                        0,0-0,3: Menciona apenas um fator ou sem conexão clara<br>
+                        0,4-0,6: Identifica dois fatores corretamente, falta profundidade<br>
+                        0,7-0,9: Explica os três fatores, mas não identifica qual é mais significativo<br>
+                        1,0: Relaciona corretamente os três fatores (temperatura, área superficial, pressão) com cinética, indica temperatura/pressão como mais significativa
+                    </div>
+                </div>
+
+                <!-- ===== QUESTÃO 10 (Dissertativa - Grupo 3) ===== -->
+                <div class="questao">
+                    <div class="questao-titulo">QUESTÃO 10 (Dissertativa) - Análise/Justificação</div>
+                    <div class="questao-enunciado">
+                        <strong>Analisar e justificar estratégias para controlar a velocidade de transformações químicas.</strong>
+                        
+                        <br><br>Uma fábrica de medicamentos produz um composto químico importante através de uma reação que é extremamente exotérmica (libera muito calor). Se a reação ficar muito rápida, o calor gerado pode danificar o produto e explodir o reator. Se ficar muito lenta, a produção se torna economicamente inviável. 
+                        
+                        <br><br><em>Analisando a importância dos fatores de cinética química, proponha uma estratégia completa (cite pelo menos 3 ações) que a fábrica poderia implementar para manter a reação em uma velocidade ótima e segura. Justifique por que cada ação contribui para esse controle.</em>
+                    </div>
+                    <figure class="questao-imagem">
+                        <img src="assets/q10-reator.png" alt="Medidas de controle de um reator exotérmico para manter a velocidade ideal.">
+                        <figcaption>Medidas de controle de um reator exotérmico para manter a velocidade ideal.</figcaption>
+                    </figure>
+                    <textarea class="campo-dissertativa" id="Q10" placeholder="Sua resposta aqui..."></textarea>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+                        <strong>Critérios de Avaliação:</strong><br>
+                        0,0-0,3: Propõe ações genéricas sem justificativa ou com conceitos errados<br>
+                        0,4-0,6: Propõe 1-2 ações com justificativa parcial<br>
+                        0,7-0,9: Propõe 3 ações com justificativas adequadas, falta profundidade na análise<br>
+                        1,0: Propõe 3+ ações (resfriamento, catalisador, concentração controlada), justifica cada uma com conceitos corretos de cinética, integra segurança e economia
+                    </div>
+                </div>
+
+                <div class="botoes-footer">
+                    <button type="button" class="btn btn-limpar" onclick="limparFormulario()">Limpar Respostas</button>
+                    <button type="submit" class="btn btn-enviar">Enviar Respostas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Lista oficial da 3ª Série F (arquivo 3ªSérieF.xlt).
+        const alunosPorTurma = {
+            '3ª Série F': [
+                { nome: 'EVELYN LUANE DE SENA ALVES', ra: '112219637', digRa: '4', email: '00001122196374SP@al.educacao.sp.gov.br' },
+                { nome: 'GABRIEL RONDINI DA SILVA', ra: '112208931', digRa: '4', email: '00001122089314SP@al.educacao.sp.gov.br' },
+                { nome: 'GUSTAVO HENRIQUE FIGUEREDO CARVALHO', ra: '120369358', digRa: '8', email: '00001203693588SP@al.educacao.sp.gov.br' },
+                { nome: 'JOAO MARCOS DANTAS DA SILVA', ra: '112212796', digRa: '0', email: '00001122127960SP@al.educacao.sp.gov.br' },
+                { nome: 'MIGUEL DE OLIVEIRA AQUINO', ra: '112228039', digRa: '7', email: '00001122280397SP@al.educacao.sp.gov.br' },
+                { nome: 'PEDRO HENRIQUE FAGUNDES DE LIMA', ra: '112221851', digRa: '5', email: '00001122218515SP@al.educacao.sp.gov.br' },
+                { nome: 'PEDRO MIGUEL ALMEIDA DO NASCIMENTO', ra: '111128972', digRa: '4', email: '00001111289724SP@al.educacao.sp.gov.br' },
+                { nome: 'WILLIAN ROBERTO DUARTE', ra: '111401688', digRa: '3', email: '00001114016883SP@al.educacao.sp.gov.br' },
+                { nome: 'YGOR BRYAN SILVA OLIVEIRA', ra: '121492670', digRa: '8', email: '00001214926708SP@al.educacao.sp.gov.br' },
+                { nome: 'ANA JÚLLIA LIMA CLAUDIO', ra: '112220804', digRa: '2', email: '00001122208042SP@al.educacao.sp.gov.br' },
+                { nome: 'AYSHILLA PEREIRA DOS SANTOS', ra: '112039230', digRa: '5', email: '00001120392305SP@al.educacao.sp.gov.br' },
+                { nome: 'HYAGO SANTOS XAVIER', ra: '113206434', digRa: 'X', email: '0000113206434XSP@al.educacao.sp.gov.br' },
+                { nome: 'JULIA DARRIBA CESTARI', ra: '113207466', digRa: '6', email: '00001132074666SP@al.educacao.sp.gov.br' },
+                { nome: 'JULIANA CRISTINA ARAUJO OLIVEIRA', ra: '113216426', digRa: '6', email: '00001132164266SP@al.educacao.sp.gov.br' },
+                { nome: 'KAUANY COSTA HELUANY', ra: '110458664', digRa: '2', email: '00001104586642SP@al.educacao.sp.gov.br' },
+                { nome: 'LUDIMILA NEVES DA SILVA', ra: '112217185', digRa: '7', email: '00001122171857SP@al.educacao.sp.gov.br' },
+                { nome: 'MATHEUS CRISTHOFER OLIVEIRA DE SOUZA RAMOS', ra: '114156387', digRa: '3', email: '00001141563873SP@al.educacao.sp.gov.br' },
+                { nome: 'PABLO HENRIQUE DA PAIXÃO TEIXEIRA', ra: '120994167', digRa: '3', email: '00001209941673SP@al.educacao.sp.gov.br' },
+                { nome: 'YAGO COLDI BELI AZEVEDO DA SILVA', ra: '112049371', digRa: '7', email: '00001120493717SP@al.educacao.sp.gov.br' },
+                { nome: 'JOÃO MANOEL DO NASCIMENTO MENEZES', ra: '112096075', digRa: '7', email: '00001120960757SP@al.educacao.sp.gov.br' },
+                { nome: 'IAGO FELIPE SANDRIN BERTIN', ra: '114186470', digRa: '8', email: '00001141864708SP@al.educacao.sp.gov.br' },
+                { nome: 'ANDRE FRANCESCHINI SOARES', ra: '113059025', digRa: '2', email: '00001130590252SP@al.educacao.sp.gov.br' },
+                { nome: 'ANA JULIA ROCHA DE JESUS', ra: '111403521', digRa: 'X', email: '0000111403521XSP@al.educacao.sp.gov.br' },
+                { nome: 'JULIA DE CASTRO CARDOSO', ra: '113209355', digRa: '7', email: '00001132093557SP@al.educacao.sp.gov.br' },
+                { nome: 'MANUELA TELES DE OLIVEIRA', ra: '110498132', digRa: '4', email: '00001104981324SP@al.educacao.sp.gov.br' },
+                { nome: 'RAISSA VITORIA LENARES SANTOS', ra: '114151501', digRa: '5', email: '00001141515015SP@al.educacao.sp.gov.br' },
+                { nome: 'BRENO APARECIDO DE SOUSA NASCIMENTO', ra: '114146626', digRa: '0', email: '00001141466260SP@al.educacao.sp.gov.br' },
+                { nome: 'YASMIN CABRAL KELER DOMINGUES', ra: '112213900', digRa: '7', email: '00001122139007SP@al.educacao.sp.gov.br' },
+                { nome: 'MARIA CLARA COSTA MARTINS', ra: '113208116', digRa: '6', email: '00001132081166SP@al.educacao.sp.gov.br' },
+                { nome: 'JOAO VICTOR DE CARVALHO SANTOS', ra: '109485196', digRa: '6', email: '00001094851966SP@al.educacao.sp.gov.br' },
+                { nome: 'MYLLENA CARDOZO FERREIRA', ra: '113212612', digRa: '5', email: '00001132126125SP@al.educacao.sp.gov.br' },
+                { nome: 'LUDMILA SILVA FELICIANO', ra: '112496089', digRa: '2', email: '00001124960892SP@al.educacao.sp.gov.br' },
+                { nome: 'LEONARDO RIKELME NUNES', ra: '113208776', digRa: '4', email: '00001132087764SP@al.educacao.sp.gov.br' },
+                { nome: 'GABRIEL FELIPO DE MORAIS', ra: '112219357', digRa: '9', email: '00001122193579SP@al.educacao.sp.gov.br' },
+                { nome: 'MIKAELLI PARMEGIANI MATHIAS', ra: '112222661', digRa: '5', email: '00001122226615SP@al.educacao.sp.gov.br' },
+                { nome: 'EMILLY FERNANDES', ra: '111713689', digRa: '9', email: '00001117136899SP@al.educacao.sp.gov.br' },
+                { nome: 'LOHAYNI VICTORIA TAVARES DOS SANTOS', ra: '113851262', digRa: 'X', email: '0000113851262XSP@al.educacao.sp.gov.br' },
+                { nome: 'EMILLY STEPHANIE CAMARGO DE JESUS', ra: '111847068', digRa: '0', email: '00001118470680SP@al.educacao.sp.gov.br' },
+                { nome: 'MAISSA QUERCIA GALLO', ra: '112131726', digRa: '1', email: '00001121317261SP@al.educacao.sp.gov.br' },
+                { nome: 'MANUELA LEDIER DE ABREU', ra: '115125705', digRa: '9', email: '00001151257059SP@al.educacao.sp.gov.br' },
+                { nome: 'IASMIN DE SOUZA ALBERTO', ra: '111571604', digRa: '9', email: '00001115716049SP@al.educacao.sp.gov.br' }
+            ]
+        };
+        const gabarito = {
+            'Q1': 'C',
+            'Q2': 'D',
+            'Q3': 'B',
+            'Q4': 'D',
+            'Q5': 'C',
+            'Q6': 'E',
+            'Q7': 'A'
+        };
+
+        const googleSheetURL = 'COLE_AQUI_A_URL_DO_WEB_APP_APPS_SCRIPT'; // Será substituído após deploy
+
+        // Event listeners
+        document.getElementById('turma').addEventListener('change', function() {
+            carregarNomes(this.value);
+        });
+
+        document.getElementById('nome').addEventListener('change', function() {
+            carregarDadosAluno(this.value);
+        });
+
+        document.getElementById('formulario').addEventListener('submit', function(e) {
+            e.preventDefault();
+            enviarRespostas();
+        });
+
+        function carregarNomes(turma) {
+            const select = document.getElementById('nome');
+            select.innerHTML = '<option value="">-- Selecione o nome --</option>';
+            
+            if (alunosPorTurma[turma]) {
+                alunosPorTurma[turma].forEach(aluno => {
+                    const option = document.createElement('option');
+                    option.value = aluno.nome;
+                    option.textContent = aluno.nome;
+                    option.dataset.ra = aluno.ra;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        function carregarDadosAluno(nome) {
+            const turma = document.getElementById('turma').value;
+            const aluno = alunosPorTurma[turma].find(a => a.nome === nome);
+            
+            if (aluno) {
+                document.getElementById('ra').value = aluno.ra;
+                document.getElementById('email').value = aluno.email;
+            }
+        }
+
+        function selecionarResposta(element, questao) {
+            const alternativas = element.parentElement.querySelectorAll('.alternativa');
+            alternativas.forEach(alt => alt.classList.remove('selecionada'));
+            element.classList.add('selecionada');
+        }
+
+        function limparFormulario() {
+            if (confirm('Deseja realmente limpar todas as respostas?')) {
+                document.querySelectorAll('.alternativa').forEach(alt => {
+                    alt.classList.remove('selecionada');
+                });
+                document.querySelectorAll('textarea').forEach(ta => {
+                    ta.value = '';
+                });
+                document.getElementById('formulario').reset();
+            }
+        }
+
+        function enviarRespostas() {
+            const turma = document.getElementById('turma').value;
+            const nome = document.getElementById('nome').value;
+            const ra = document.getElementById('ra').value;
+            const email = document.getElementById('email').value;
+
+            if (!turma || !nome) {
+                mostrarMensagem('Por favor, preencha turma e nome do aluno!', 'erro');
+                return;
+            }
+
+            // Coletar respostas objetivas
+            const respostasObjetivas = {};
+            for (let i = 1; i <= 7; i++) {
+                const questao = `Q${i}`;
+                const grupo = document.querySelector(`.alternativas[data-questao="${questao}"]`);
+                const selecionada = grupo?.querySelector('.alternativa.selecionada');
+                if (selecionada) {
+                    const resposta = selecionada.textContent.charAt(0);
+                    respostasObjetivas[questao] = resposta;
+                }
+            }
+
+            // Coletar respostas dissertativas
+            const respostasDissertativas = {};
+            for (let i = 8; i <= 10; i++) {
+                const questao = `Q${i}`;
+                respostasDissertativas[questao] = document.getElementById(questao).value || '';
+            }
+
+            // Calcular acertos nas questões objetivas
+            let acertos = 0;
+            for (let i = 1; i <= 7; i++) {
+                const questao = `Q${i}`;
+                if (respostasObjetivas[questao] === gabarito[questao]) {
+                    acertos++;
+                }
+            }
+
+            // Preparar dados para enviar
+            const dados = {
+                turma: turma,
+                nome: nome,
+                ra: ra,
+                email: email,
+                Q1: respostasObjetivas['Q1'] || '',
+                Q2: respostasObjetivas['Q2'] || '',
+                Q3: respostasObjetivas['Q3'] || '',
+                Q4: respostasObjetivas['Q4'] || '',
+                Q5: respostasObjetivas['Q5'] || '',
+                Q6: respostasObjetivas['Q6'] || '',
+                Q7: respostasObjetivas['Q7'] || '',
+                Q8: respostasDissertativas['Q8'],
+                Q9: respostasDissertativas['Q9'],
+                Q10: respostasDissertativas['Q10'],
+                acertos_objetivas: acertos,
+                data_hora: new Date().toLocaleString('pt-BR')
+            };
+
+            // Enviar para Google Sheets via Apps Script
+            fetch(googleSheetURL, {
+                method: 'POST',
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'sucesso') {
+                    mostrarMensagem(`✓ Respostas enviadas com sucesso! Você acertou ${acertos} de 7 questões objetivas.`, 'sucesso');
+                    setTimeout(() => {
+                        document.getElementById('formulario').reset();
+                        document.querySelectorAll('.alternativa').forEach(alt => alt.classList.remove('selecionada'));
+                    }, 2000);
+                } else {
+                    mostrarMensagem('Erro ao enviar respostas. Tente novamente.', 'erro');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                mostrarMensagem('Erro de conexão. Verifique se o Apps Script está ativo.', 'erro');
+            });
+        }
+
+        function mostrarMensagem(texto, tipo) {
+            const msg = document.getElementById('mensagem');
+            msg.textContent = texto;
+            msg.className = 'mensagem ' + tipo;
+            setTimeout(() => {
+                msg.className = 'mensagem';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
